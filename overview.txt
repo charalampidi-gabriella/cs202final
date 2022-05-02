@@ -1,0 +1,138 @@
+#Base Level: Everyone must attempt the base level project which consists of building the application with a console user
+interface and a limited number of processors.
+
+#Challenge Level: You have the option to complete the Challenge Level as described below. Completing the challenge
+level successfully gives you the possibility of a grade of 120%.
+
+#Project Description:
+In this project, you will create an application that can load audio data from  wav  files, manipulate the data to add common
+audio effects such as echo and normalization, and save the files for later playback.
+
+***Background
+Digital audio files consist of thousands of samples. A sample is a measurement of the amplitude of the signal coming from
+a microphone or electronic instrument at an instant in time. The process of turning the sampled value into a binary
+number is called quantization. The process is referred to as pulse code modulation.
+
+***Sample Rates
+Modern digital audio systems typically record 44,100 or 48,000 samples per second per channel, so a stereo recording
+contains 88,200 or 176,400 samples, respectively, for every second of audio recorded. The sample rate directly affects the
+system frequency response.
+
+***Quantization (bit depth)
+The number of bits used to store a sample determines the accuracy of the sample. The higher number of bits used, the
+more accurate and less noisy the samples. Typical sample formats are 8, 16, 24, and 32 bits. We will be using wav files that
+are either 8 or 16 bits, and either mono or stereo.
+For more information, see https://www.izotope.com/en/learn/digital-audio-basics-sample-rate-and-bit-depth.html
+
+***File Formats and Compression
+Audio files are binary rather than text. The data can be compressed (not zip!) to reduce file size or they can contain
+uncompressed sample values. Compressed formats include mp3 and AAC. We will be working with uncompressed files in
+the  wav  file format. The format for a  wav  file can be found here: http://soundfile.sapp.org/doc/WaveFormat/
+
+#Architecture
+The Model-View-Controller pattern was developed for desktop applications first in the Smalltalk language. It has become a
+dominant architecture for web applications. For the purposes of this project, it provides a prototype for the application
+architecture.
+
+***The Model
+The model represents the data in the system. In a database-backed application, the model serves as an interface between
+the application code and the database. In this project, it will provide an interface to the wav file data.
+
+***The View
+The view is responsible for displaying output and managing user input. For the basic level of the project, this will be the
+console I/O. For those attempting the challenge level, it will be the UI presented by the Qt framework.
+
+***The Controller
+The controller manages control flow, communicating between the model and the view. There are many variations in the
+way that the controller is used in MVC: in some, it contains all the business logic, in others, it does nothing more than pass
+messages between the view and the model. In this project, you will use the controller to manage the application flow.
+
+***The Processor Module
+The processor module is not strictly part of the MVC pattern. Some frameworks put similar code in the controller. For this
+implementation, you will keep the processor code in its own module and have the controller use it as needed.
+The diagram below shows the major components of the system.
+
+#Managing Audio Data
+Audio data in  wav  files is stored as integers. For processing purposes, however, integers can be problematic. This is in part
+because 8 bit data, for example, has its zero value at 128, while 16 bit data uses both positive and negative numbers with 0
+representing the 0 value. 
+***The best approach is to convert the integer values to floating point format
+perform all processing using the floating point values
+convert the floating point values to integers when writing out the result of processing
+You are asked to process 8 and 16 bit mono and stereo files. You will need to use templates, inheritance, or
+composition/aggregation to manage the different formats.
+
+#Program Flow
+The sequence diagram below shows the program flow, including the messages (function calls) made between the primary
+objects in the system. It is intended to provide an overview of the responsibilities of each object. The specific functions
+required to implement the flow are up to you. Keep in mind that error handling is not shown in the diagram, but IS required. 
+For example, if the user enters an invalid filename, the program should warn them that the file is not valid, and
+ask for the filename again.
+
+#File Metadata
+***The data to be displayed by the console:
+file name
+sample rate
+bits per sample
+stereo or mono
+length of the file in seconds
+
+#Required Processors
+The following are the processes to be implemented
+
+normalization Algorithm: The largest sample value in the data is found, and then the data is scaled so that that value is the
+maximum possible value. This maximizes the amplitude of the final waveform.
+Example for floating point data
+Original data: n = {0,0.2,0.4,0,-0.3}
+Largest absolute value: 0.4, so scaling value s = 1/0.4 = 2.5
+Scaled result: n_scaled = {0, 0.5,1,0,-0.75}
+
+echo Algorithm: Samples are copied, scaled, and added to later locations in the sample buffer to create an echo effect.
+Feedback architecture
+
+
+Processor ( <- -> ) Controller
+Model ( <- -> ) Controller
+View ( <- -> ) Controller
+Processor ( <- -> ) Model
+
+Processor:
+Signal processor ( <<interface>> )
+Echo, Reverser, Normalizer and Other Processor -> signal processor
+
+Model:
+WaveWriter
+WaveReader
+Wav
+WavModel -> IWavModel ( <<interface>> )
+
+
+UML REDESIGN -> 
+0) from main instantiate the Controller
+1) from main instantiate the console
+2) from main setUI(console)
+3) from main run controller 
+4) from controller request file name from console
+5) from console request input from user
+6) user inputs file name to console
+// error handling for invalid inputs
+7) from console return filename
+8) from controller run open file to model
+9) from model open file and read attributes
+10) from model return file attributes to controller
+11) from controller display attributes to console
+12) from controller get availiable processes to model
+13) from model return process list to controller
+14) from controller display process menu to console 
+15) from console request process selection to user
+16) user inputs selection to console
+// error handling for invalid inputs
+17) from console return selection to controller
+18) from controller request output filename to console
+19) from console request output filename to user
+20) user inputs outfilename to console
+// error handling for invalid inputs
+21) from console return output filename to controller
+22) from controller process file to model
+23) from model process file and save to model
+24) from model return success to controller
