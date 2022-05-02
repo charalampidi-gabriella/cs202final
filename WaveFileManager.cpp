@@ -1,6 +1,8 @@
 #include "WaveFileManager.h"
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include <algorithm>
 
 void WaveFileManager::read(const std::string &fileName) {
     std::ifstream file(fileName, std::ios::binary | std::ios::in);
@@ -48,7 +50,7 @@ bool ab(float a, float b) {
 
 //Convert the sound data to an original format and save it to a file
 void WaveFileManager::save(const std::string &outputFileName) {
-    std::ofstream outFile(outFileName, std::ios::out | std::ios::binary);
+    std::ofstream outFile(outputFileName, std::ios::out | std::ios::binary);
 
     //find the max value in the sound data
     auto maxLocation = std::max_element(soundData.begin(), soundData.end(),
@@ -60,7 +62,7 @@ void WaveFileManager::save(const std::string &outputFileName) {
     //auto maxLocation = std::max_element(soundData.begin(), soundData.end(), abs_compare);
     float maxValue = *maxLocation;
 
-    std::transform(soundData.begin(), soundData.end(), soundData.begin()
+    std::transform(soundData.begin(), soundData.end(), soundData.begin(),
         [maxValue](float a) {
             return a / maxValue;
     });
