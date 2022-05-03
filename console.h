@@ -5,9 +5,7 @@ class Console {
     private:
 
     public:
-        std::string getFileName() {
-            return "ym16.wav" //stubbed out value??
-        }
+        std::string getFileName();
         //other functions?
 };
 

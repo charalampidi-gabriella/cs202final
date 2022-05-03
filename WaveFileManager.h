@@ -2,6 +2,7 @@
 #define WAVEFILEMANAGER_H
 
 #include <iostream>
+#include <vector>
 
 class WaveFileManager {
     private:
@@ -12,6 +13,6 @@ class WaveFileManager {
         const std::vector<float> &WaveFileManager::getData();
         void WaveFileManager::updateSoundData(std::vector<float> newData);
         void WaveFileManager::save8bit(const std::string &outputFileName);
-}
+};
 
 #endif

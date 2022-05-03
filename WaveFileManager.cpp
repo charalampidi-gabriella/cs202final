@@ -1,9 +1,10 @@
 #include "WaveFileManager.h"
+#include "model.h"
 #include <fstream>
 #include <vector>
 #include <algorithm>
 
-void WaveFileManager::read(const std::string &fileName) {
+void WaveFileManager::read(const std::string &fileName) { //16bit
     std::ifstream file(fileName, std::ios::binary | std::ios::in);
     short * buffer = nullptr;
     if (file.is_open()) {
@@ -17,7 +18,6 @@ void WaveFileManager::read(const std::string &fileName) {
         file.close();
     }
     delete[] buffer;
-
 }
 
 void WaveFileManager::read8bit(const std::string &fileName) {

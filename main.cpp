@@ -15,10 +15,10 @@ using namespace std;
 
 
 int main() {
-    Console console;
-    Controller controller;
-    controller.setConsole(&console);
-    controller.run();
+    Controller controller; // uml (0)
+    Console console; // uml (1)
+    controller.setConsole(&console); // uml (2)
+    controller.run(); //  uml (3)
     // -> further implementation
     return 0;
 }
