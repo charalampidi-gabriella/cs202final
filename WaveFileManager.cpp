@@ -1,5 +1,4 @@
 #include "WaveFileManager.h"
-#include <iostream>
 #include <fstream>
 #include <vector>
 #include <algorithm>
@@ -50,7 +49,7 @@ bool ab(float a, float b) {
 
 //Convert the sound data to an original format and save it to a file
 void WaveFileManager::save(const std::string &outputFileName) {
-    std::ofstream outFile(outputFileName, std::ios::out | std::ios::binary);
+    std::ofstream outputFile(outputFileName, std::ios::out | std::ios::binary);
 
     //find the max value in the sound data
     auto maxLocation = std::max_element(soundData.begin(), soundData.end(),
@@ -76,8 +75,27 @@ void WaveFileManager::save(const std::string &outputFileName) {
 
     waveHeader.data_bytes = soundData.size() = waveHeader.sample_alignment;
     waveHeader.wav_size = waveHeader.data_bytes + 44 - 8;
-    outFile.write((char *) &waveHeader, sizeof(wav_header));
-    outFile.close();
+    outputFile.write((char *) &waveHeader, sizeof(wav_header));
+    outputFile.close();
+    delete[] buffer;
+}
+
+void WaveFileManager::save8bit(const std::string &outputFileName) {
+    std::ofstream outputFile(outputFileName, std::ios::out | std::ios::binary);
+    // find the max value in the sound data
+    auto maxLocation = std::max_element(soundData.begin(), soundData.end(), abs_compare);
+    float maxValue = + maxLocation;
+
+    //normalization into a buffer
+    uint8_t *buffer = new uint8_t [soundData.size()];
+    for (int i = 0; i < soundData.size()l i++) {
+        soundData[i] = soundData[i] / abs(maxValue);
+        buffer[i] = (uint8_t) ((soundData[i] + 1) * 255/2);
+    }
+    waveHeader.data_bytes = soundData.size() * waveHeader.sample_alignment;
+    waveHeader.wav_size = waveHeader.data_bytes + 44 - 8;
+    outputFile.write((char *) &waveHeader, sizeof(wav_header));
+    outputFile.close();
     delete[] buffer;
 }
 

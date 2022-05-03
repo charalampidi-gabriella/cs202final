@@ -11,6 +11,7 @@ class WaveFileManager {
         void WaveFileManager::save(const std::string &outputFileName);
         const std::vector<float> &WaveFileManager::getData();
         void WaveFileManager::updateSoundData(std::vector<float> newData);
+        void WaveFileManager::save8bit(const std::string &outputFileName);
 }
 
 #endif
