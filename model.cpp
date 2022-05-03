@@ -6,7 +6,7 @@
 // more of a bus type of file
 
 void Model::openFile(std::string fileName) {
-    if (fileName[0] == 0) {
+    if (fileName[0] == 8) {
         //8bit
         std::vector<float> soundData;
         soundData = wr->open8b(fileName);
