@@ -10,15 +10,9 @@ void Model::openFile(std::string fileName) {
         //8bit
         std::vector<float> soundData;
         soundData = wr->open8b(fileName);
-        for (int i = 0; i < soundData.size(); i++) {
-            std::cout << soundData[i];
-        }
     } else {
         //16bit
         std::vector<float> soundData;
         soundData = wr->open16b(fileName);
-        for (int i = 0; i < soundData.size(); i++) {
-            std::cout << soundData[i];
-        }
     }
 }
