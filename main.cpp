@@ -9,9 +9,9 @@
 using namespace std;
 
 
-#include <console.h>
-#include <controller.h>
-#include <model.h>
+#include "console.h"
+#include "controller.h"
+#include "model.h"
 
 
 int main() {
