@@ -3,6 +3,8 @@
 
 #include <string>
 #include "WaveFileManager.h"
+#include "WavReader.h"
+
 
 class Model {
     private:
